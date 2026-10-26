@@ -1,0 +1,1426 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ODOK Academic Portal / Security Science & Int. Relations</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f4f8',
+                            100: '#d9e2ec',
+                            500: '#102a43',
+                            600: '#0b69a3',
+                            700: '#094c72',
+                            800: '#03363d',
+                            900: '#012027',
+                            gold: '#d97706',
+                            goldHover: '#b45309'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Merriweather', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts & FontAwesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; transition: background-color 0.3s ease, color 0.3s ease; }
+        .font-serif-title { font-family: 'Merriweather', serif; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); }
+        ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 3px; }
+
+        /* Theme Variants */
+        body.theme-slate { background-color: #f8fafc; color: #0f172a; }
+        .dark body.theme-slate { background-color: #0f172a; color: #f8fafc; }
+
+        body.theme-midnight { background-color: #091220; color: #f1f5f9; }
+        .dark body.theme-midnight { background-color: #030712; color: #f8fafc; }
+
+        body.theme-emerald { background-color: #022c22; color: #ecfdf5; }
+        .dark body.theme-emerald { background-color: #011d16; color: #f0fdf4; }
+
+        body.theme-obsidian { background-color: #0a0a0a; color: #f5f5f5; }
+        .dark body.theme-obsidian { background-color: #000000; color: #ffffff; }
+    </style>
+</head>
+<body id="portalBody" class="theme-slate min-h-screen flex flex-col transition-colors duration-300">
+
+    <!-- TOP ANNOUNCEMENT BANNER -->
+    <div id="topAnnouncementBar" class="bg-brand-500 text-white text-xs md:text-sm py-2 px-4 font-medium flex flex-wrap items-center justify-between gap-2 border-b border-brand-600">
+        <div class="flex items-center gap-2 mx-auto md:mx-0">
+            <span class="bg-amber-500 text-slate-950 px-2 py-0.5 rounded text-[11px] font-bold uppercase tracking-wider">Academic Portal</span>
+            <span id="announcementText" class="hidden sm:inline">ODOK / SECURITY SCIENCE AND MANAGEMENT (S105), INTERNATIONAL RELATIONS & PEACE STUDIES (S106)</span>
+            <span class="sm:hidden">ODOK Academic Repository</span>
+        </div>
+        <!-- Admin & Student Profile Quick Bar -->
+        <div class="flex items-center gap-3 mx-auto md:mx-0">
+            <!-- Online Counter Badge -->
+            <div id="liveOnlineCounter" class="hidden sm:flex items-center gap-1.5 bg-slate-800/80 text-emerald-400 px-2.5 py-1 rounded-full text-xs font-semibold border border-slate-700">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                <span id="activeCountText">1 Active Online</span>
+            </div>
+
+            <!-- Role Indicator -->
+            <div id="roleBadge" class="flex items-center gap-2">
+                <span id="roleLabel" class="text-[11px] font-semibold bg-slate-800 text-slate-300 px-2.5 py-1 rounded-full border border-slate-700">Student Mode</span>
+                <button id="roleActionBtn" onclick="openAdminModal()" class="text-xs bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-3 py-1 rounded-lg transition shadow-sm">
+                    <i class="fa-solid fa-lock me-1"></i> Admin Login
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- NAVIGATION HEADER -->
+    <header class="sticky top-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 transition-colors">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+            
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-700 to-brand-500 text-amber-400 flex items-center justify-center text-xl font-bold shadow-md group-hover:scale-105 transition-transform flex-shrink-0">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <div>
+                    <span class="font-bold text-sm sm:text-base leading-tight block text-brand-500 dark:text-slate-100 tracking-tight">
+                        ODOK PORTAL
+                    </span>
+                    <span class="text-[9px] sm:text-[10px] text-amber-600 dark:text-amber-400 font-semibold tracking-wider block -mt-0.5">
+                        SECURITY SCIENCE (S105) & INT. RELATIONS (S106)
+                    </span>
+                </div>
+            </a>
+
+            <!-- Nav Links (Desktop) -->
+            <nav class="hidden lg:flex items-center gap-1 xl:gap-2 text-xs font-medium">
+                <a href="#student-portal" class="px-3 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-amber-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition">My Student ID</a>
+                <a href="#notes" class="px-3 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-amber-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition">Academic Materials</a>
+                <a href="#live-meets" class="px-3 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-amber-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition">Google Meet Lectures</a>
+                <a href="#qa-forum" class="px-3 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-amber-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition">Q&A Help Forum</a>
+            </nav>
+
+            <!-- Actions & Settings Commands -->
+            <div class="flex items-center gap-2 sm:gap-3">
+                <!-- Admin Action Buttons -->
+                <button id="adminUploadBtn" onclick="openUploadModal()" class="hidden px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> Upload Doc
+                </button>
+                <button id="adminAddMeetBtn" onclick="openMeetModal()" class="hidden px-3 py-1.5 rounded-lg bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+                    <i class="fa-solid fa-video"></i> Schedule Meet
+                </button>
+
+                <!-- ADMIN SETTINGS GEAR BUTTON (SETTINGS COMMAND) -->
+                <button id="adminSettingsBtn" onclick="openSettingsModal()" class="hidden px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-xs transition flex items-center gap-1.5 shadow-md animate-pulse">
+                    <i class="fa-solid fa-gear text-sm"></i> Settings & Control
+                </button>
+
+                <!-- Dark Mode Toggle -->
+                <button id="themeToggle" onclick="toggleDarkMode()" aria-label="Toggle Theme" class="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition">
+                    <i class="fa-solid fa-moon dark:hidden"></i>
+                    <i class="fa-solid fa-sun hidden dark:block text-amber-400"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-grow">
+        
+        <!-- HERO SECTION -->
+        <section class="relative bg-gradient-to-b from-brand-500 via-brand-700 to-slate-900 text-white overflow-hidden py-14 lg:py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+                <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-amber-300 border border-white/20 backdrop-blur-md mb-6">
+                    <i class="fa-solid fa-graduation-cap"></i> Persistent Auto-Backup Repository & Real-Time Presence
+                </span>
+                <h1 class="font-serif-title text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight max-w-5xl mx-auto leading-tight">
+                    ODOK / SECURITY SCIENCE AND MANAGEMENT (S105), INTERNATIONAL RELATIONS & PEACE STUDIES (S106)
+                </h1>
+                <p class="mt-4 text-sm sm:text-base text-slate-200 max-w-3xl mx-auto leading-relaxed">
+                    Registered students auto-backup into persistent local storage. Live site presence, automated Google Meet attendance logging, study notes repository, and faculty Q&A support.
+                </p>
+            </div>
+        </section>
+
+        <!-- STUDENT REGISTRATION & PROFILE CARD BANNER -->
+        <section id="student-portal" class="py-8 bg-slate-100 dark:bg-slate-950/80 border-b border-slate-200 dark:border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div id="studentRegistrationBanner" class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-700 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                    <!-- Dynamic Profile Info Rendered Here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ADMIN ONLY: REAL-TIME STUDENT PRESENCE & ATTENDANCE ROSTER -->
+        <section id="adminRosterSection" class="hidden py-10 bg-amber-50/60 dark:bg-slate-900 border-b border-amber-200/80 dark:border-amber-900/40">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="bg-white dark:bg-slate-800/90 rounded-2xl p-6 shadow-sm border border-amber-300/80 dark:border-amber-900/60">
+                    
+                    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-slate-200 dark:border-slate-700">
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-[10px] font-extrabold uppercase tracking-widest bg-amber-500 text-slate-950 px-2 py-0.5 rounded">Admin Control Panel</span>
+                                <span class="text-[10px] font-extrabold uppercase tracking-widest bg-emerald-600 text-white px-2 py-0.5 rounded flex items-center gap-1">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span> Live Heartbeat Active
+                                </span>
+                            </div>
+                            <h2 class="font-serif-title font-bold text-xl text-slate-900 dark:text-white mt-1 flex items-center gap-2">
+                                <i class="fa-solid fa-users-viewfinder text-amber-600 dark:text-amber-400"></i> Student Auto-Backup Roster & Attendance Monitor
+                            </h2>
+                            <p class="text-xs text-slate-600 dark:text-slate-400 mt-0.5">
+                                Real-time status: <strong class="text-emerald-600 dark:text-emerald-400">Pulsing Green</strong> = Active Online. <strong class="text-red-500">Red Indicator</strong> = Offline.
+                            </p>
+                        </div>
+
+                        <!-- Search & Export Controls -->
+                        <div class="flex flex-wrap items-center gap-2">
+                            <input type="text" id="rosterSearch" oninput="renderAdminRoster()" placeholder="Search name or reg no..." class="px-3 py-1.5 text-xs bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500">
+                            <select id="rosterFilter" onchange="renderAdminRoster()" class="px-3 py-1.5 text-xs bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:outline-none">
+                                <option value="ALL">All Registered Students</option>
+                                <option value="ONLINE">🟢 Active Online Now</option>
+                                <option value="OFFLINE">🔴 Offline Only</option>
+                                <option value="S105">S105 - Security Science</option>
+                                <option value="S106">S106 - Int. Relations</option>
+                            </select>
+                            <button onclick="exportRosterCSV()" class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-lg transition flex items-center gap-1.5">
+                                <i class="fa-solid fa-file-csv"></i> Export CSV
+                            </button>
+                            <button onclick="openSettingsModal()" class="px-3.5 py-1.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs rounded-lg transition flex items-center gap-1.5">
+                                <i class="fa-solid fa-gear"></i> Settings
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Presence Statistics Bar -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 my-4">
+                        <div class="bg-slate-50 dark:bg-slate-900/60 p-3 rounded-xl border border-slate-200 dark:border-slate-700">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Total Auto-Backed Up</span>
+                            <span id="statTotalStudents" class="text-lg font-extrabold text-slate-900 dark:text-white">0</span>
+                        </div>
+                        <div class="bg-emerald-50 dark:bg-emerald-950/40 p-3 rounded-xl border border-emerald-200 dark:border-emerald-800/60">
+                            <span class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider block">Online Right Now</span>
+                            <span id="statOnlineStudents" class="text-lg font-extrabold text-emerald-600 dark:text-emerald-400">0</span>
+                        </div>
+                        <div class="bg-red-50 dark:bg-red-950/30 p-3 rounded-xl border border-red-200 dark:border-red-900/40">
+                            <span class="text-[10px] font-bold text-red-500 uppercase tracking-wider block">Currently Offline</span>
+                            <span id="statOfflineStudents" class="text-lg font-extrabold text-red-500">0</span>
+                        </div>
+                        <div class="bg-amber-50 dark:bg-amber-950/40 p-3 rounded-xl border border-amber-200 dark:border-amber-900/60">
+                            <span class="text-[10px] font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider block">Meet Attendance Logs</span>
+                            <span id="statAttendanceCount" class="text-lg font-extrabold text-amber-600 dark:text-amber-400">0</span>
+                        </div>
+                    </div>
+
+                    <!-- Roster Table -->
+                    <div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700 mt-2">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                                <tr>
+                                    <th class="p-3">Status</th>
+                                    <th class="p-3">Student Full Name</th>
+                                    <th class="p-3">Registration Number</th>
+                                    <th class="p-3">Program / Category</th>
+                                    <th class="p-3">Last Active Ping</th>
+                                    <th class="p-3">Classes Attended</th>
+                                    <th class="p-3 text-right">Admin Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rosterTableBody" class="divide-y divide-slate-200 dark:divide-slate-700/60">
+                                <!-- Dynamic Presence Roster -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ACADEMIC DOCUMENTS & REPOSITORY -->
+        <section id="notes" class="py-14 bg-slate-50 dark:bg-slate-950">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+                    <div>
+                        <h2 class="font-serif-title text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Uploaded Study Materials & Notes</h2>
+                        <p class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm mt-1">Students can view and download course readings uploaded by the Admin.</p>
+                    </div>
+                    <div class="flex items-center gap-2 text-xs bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 px-3 py-1.5 rounded-xl border border-emerald-200 dark:border-emerald-800">
+                        <i class="fa-solid fa-database text-emerald-500"></i>
+                        <span class="font-semibold">Base64 Local Storage Storage</span>
+                    </div>
+                </div>
+
+                <!-- Notes Grid -->
+                <div id="notesContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Dynamic Document Uploads Appear Here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- LIVE GOOGLE MEET LECTURES SECTION -->
+        <section id="live-meets" class="py-14 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-8">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-widest text-brand-600 dark:text-amber-400">Virtual Classroom</span>
+                        <h2 class="font-serif-title text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mt-1">Live Google Meet Seminars & Lectures</h2>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Joining a lecture automatically logs attendance in your student record.</p>
+                    </div>
+                </div>
+
+                <div id="meetsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Dynamic Google Meets Rendering -->
+                </div>
+            </div>
+        </section>
+
+        <!-- STUDENT CHALLENGING QUESTIONS & Q&A FORUM -->
+        <section id="qa-forum" class="py-14 bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-widest text-amber-600 dark:text-amber-400">Student Discussion & Assistance</span>
+                        <h2 class="font-serif-title text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mt-1">Challenging Questions & Help Forum</h2>
+                        <p class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm mt-1">Students can post challenging course questions below. The admin will review and post answers.</p>
+                    </div>
+                    <button onclick="openQuestionModal()" class="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs shadow-md transition flex items-center gap-2">
+                        <i class="fa-solid fa-circle-question"></i> Submit Question
+                    </button>
+                </div>
+
+                <!-- Questions List Grid -->
+                <div id="questionsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Dynamic Questions & Admin Answers Render Here -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ADMIN SETTINGS COMMAND MODAL -->
+    <div id="settingsModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-2xl rounded-2xl shadow-2xl p-6 border border-slate-200 dark:border-slate-800 max-h-[90vh] overflow-y-auto">
+            
+            <div class="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-gear animate-spin-slow"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg text-slate-900 dark:text-white">Admin Settings & Portal Commands</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Configure security, background themes, backups, and student rosters.</p>
+                    </div>
+                </div>
+                <button onclick="closeSettingsModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Settings Tabs / Sections -->
+            <div class="space-y-6 mt-6">
+                
+                <!-- SECTION 1: ADMIN SECURITY & PASSCODE -->
+                <div class="bg-slate-50 dark:bg-slate-800/60 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                    <h4 class="font-bold text-sm text-slate-900 dark:text-white flex items-center gap-2 mb-2">
+                        <i class="fa-solid fa-key text-amber-500"></i> Change Admin Passcode
+                    </h4>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">Update your secret password for portal admin login. Default is <code>YonaOdok@001</code>.</p>
+                    
+                    <form onsubmit="handleChangePasscode(event)" class="space-y-3">
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-600 dark:text-slate-300 mb-1">Current Passcode</label>
+                                <input type="password" id="passOld" required class="w-full text-xs px-3 py-2 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-600 dark:text-slate-300 mb-1">New Passcode</label>
+                                <input type="password" id="passNew" required class="w-full text-xs px-3 py-2 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-600 dark:text-slate-300 mb-1">Confirm New Passcode</label>
+                                <input type="password" id="passConfirm" required class="w-full text-xs px-3 py-2 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white">
+                            </div>
+                        </div>
+                        <button type="submit" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs rounded-lg shadow transition">
+                            <i class="fa-solid fa-shield-halved me-1"></i> Save New Passcode
+                        </button>
+                    </form>
+                </div>
+
+                <!-- SECTION 2: THEME & BACKGROUND CUSTOMIZER -->
+                <div class="bg-slate-50 dark:bg-slate-800/60 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                    <h4 class="font-bold text-sm text-slate-900 dark:text-white flex items-center gap-2 mb-2">
+                        <i class="fa-solid fa-palette text-brand-500"></i> Portal Theme & Background Customization
+                    </h4>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">Select active background theme for all portal visitors.</p>
+                    
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <button onclick="setPortalTheme('theme-slate')" class="p-3 rounded-xl border text-left text-xs font-bold transition hover:border-brand-500 bg-slate-100 text-slate-900">
+                            <div class="w-4 h-4 rounded-full bg-slate-800 mb-2"></div>
+                            Default Slate
+                        </button>
+                        <button onclick="setPortalTheme('theme-midnight')" class="p-3 rounded-xl border text-left text-xs font-bold transition hover:border-brand-500 bg-slate-900 text-blue-200 border-slate-700">
+                            <div class="w-4 h-4 rounded-full bg-blue-600 mb-2"></div>
+                            Midnight Navy
+                        </button>
+                        <button onclick="setPortalTheme('theme-emerald')" class="p-3 rounded-xl border text-left text-xs font-bold transition hover:border-emerald-500 bg-emerald-950 text-emerald-200 border-emerald-800">
+                            <div class="w-4 h-4 rounded-full bg-emerald-500 mb-2"></div>
+                            Dark Emerald
+                        </button>
+                        <button onclick="setPortalTheme('theme-obsidian')" class="p-3 rounded-xl border text-left text-xs font-bold transition hover:border-amber-500 bg-black text-white border-zinc-800">
+                            <div class="w-4 h-4 rounded-full bg-amber-500 mb-2"></div>
+                            Deep Obsidian
+                        </button>
+                    </div>
+                </div>
+
+                <!-- SECTION 3: TOP BANNER ANNOUNCEMENT EDIT -->
+                <div class="bg-slate-50 dark:bg-slate-800/60 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                    <h4 class="font-bold text-sm text-slate-900 dark:text-white flex items-center gap-2 mb-2">
+                        <i class="fa-solid fa-bullhorn text-amber-500"></i> Live Announcement Banner Customizer
+                    </h4>
+                    <form onsubmit="handleSaveAnnouncement(event)" class="flex gap-2">
+                        <input type="text" id="settingAnnouncementInput" placeholder="Enter custom top announcement message..." class="flex-grow text-xs px-3 py-2 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white">
+                        <button type="submit" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs rounded-lg transition">Update Banner</button>
+                    </form>
+                </div>
+
+                <!-- SECTION 4: FULL DATABASE AUTO-BACKUP EXPORT / IMPORT -->
+                <div class="bg-slate-50 dark:bg-slate-800/60 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                    <h4 class="font-bold text-sm text-slate-900 dark:text-white flex items-center gap-2 mb-2">
+                        <i class="fa-solid fa-database text-emerald-500"></i> Database Storage Auto-Backup Controls
+                    </h4>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">Export full portal JSON backup or import a saved JSON database file.</p>
+                    
+                    <div class="flex flex-wrap items-center gap-3">
+                        <button onclick="exportFullDatabaseJSON()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-lg transition flex items-center gap-2">
+                            <i class="fa-solid fa-file-export"></i> Export JSON Database Backup
+                        </button>
+
+                        <label class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs rounded-lg transition cursor-pointer flex items-center gap-2">
+                            <i class="fa-solid fa-file-import"></i> Restore Database JSON
+                            <input type="file" id="importJsonInput" accept=".json" onchange="importFullDatabaseJSON(event)" class="hidden">
+                        </label>
+                    </div>
+                </div>
+
+                <!-- SECTION 5: DATA PURGE & FACTORY RESET -->
+                <div class="bg-red-50 dark:bg-red-950/30 p-4 rounded-xl border border-red-200 dark:border-red-900/50">
+                    <h4 class="font-bold text-sm text-red-700 dark:text-red-400 flex items-center gap-2 mb-2">
+                        <i class="fa-solid fa-triangle-exclamation"></i> Danger Zone / Data Wipe
+                    </h4>
+                    <p class="text-xs text-red-600/80 dark:text-red-300/80 mb-3">Individually clear data stores or perform a hard portal factory reset.</p>
+                    
+                    <div class="flex flex-wrap items-center gap-2">
+                        <button onclick="clearCollection('docs')" class="px-3 py-1.5 bg-red-100 dark:bg-red-900/60 text-red-700 dark:text-red-200 font-bold text-[11px] rounded-lg hover:bg-red-200">Clear Notes</button>
+                        <button onclick="clearCollection('meets')" class="px-3 py-1.5 bg-red-100 dark:bg-red-900/60 text-red-700 dark:text-red-200 font-bold text-[11px] rounded-lg hover:bg-red-200">Clear Meets</button>
+                        <button onclick="clearCollection('qa')" class="px-3 py-1.5 bg-red-100 dark:bg-red-900/60 text-red-700 dark:text-red-200 font-bold text-[11px] rounded-lg hover:bg-red-200">Clear Q&A</button>
+                        <button onclick="clearCollection('attendance')" class="px-3 py-1.5 bg-red-100 dark:bg-red-900/60 text-red-700 dark:text-red-200 font-bold text-[11px] rounded-lg hover:bg-red-200">Clear Attendance</button>
+                        <button onclick="hardFactoryReset()" class="px-4 py-1.5 bg-red-600 hover:bg-red-700 text-white font-bold text-xs rounded-lg shadow">
+                            <i class="fa-solid fa-trash-arrow-up me-1"></i> Hard Factory Reset
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="pt-6 border-t border-slate-200 dark:border-slate-800 flex justify-end mt-6">
+                <button onclick="closeSettingsModal()" class="px-5 py-2 bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-bold text-xs rounded-xl">Close Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- STUDENT REGISTRATION / EDIT MODAL -->
+    <div id="studentRegisterModal" class="fixed inset-0 z-50 hidden bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-md rounded-2xl shadow-2xl p-6 border border-slate-200 dark:border-slate-800">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="font-bold text-lg text-slate-900 dark:text-white flex items-center gap-2">
+                    <i class="fa-solid fa-id-card text-amber-500"></i> Student Portal Registration
+                </h3>
+                <button onclick="closeStudentRegisterModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mb-4 leading-relaxed">
+                Enter your details once. Your record will auto-backup persistently into <code>odok_students_roster</code> and enable automated presence & lecture attendance.
+            </p>
+            <form onsubmit="handleStudentRegister(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Full Name</label>
+                    <input type="text" id="regFullName" required placeholder="e.g. John Doe" class="w-full text-xs px-3 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Registration Number (S105 or S106)</label>
+                    <input type="text" id="regStudentId" required placeholder="e.g. S105/12345/2026 or S106/54321/2026" class="w-full text-xs px-3 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    <span class="text-[10px] text-slate-400 mt-1 block">Valid prefixes: S105 (Security Science) / S106 (Int. Relations)</span>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Academic Program</label>
+                    <select id="regProgram" class="w-full text-xs px-3 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500">
+                        <option value="S105 - Security Science & Management">S105 - Security Science & Management</option>
+                        <option value="S106 - International Relations & Peace Studies">S106 - International Relations & Peace Studies</option>
+                    </select>
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeStudentRegisterModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">Cancel</button>
+                    <button type="submit" class="px-4 py-2 text-xs font-bold bg-amber-500 hover:bg-amber-600 text-slate-950 rounded-lg shadow transition">Save & Auto-Backup Profile</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ADMIN LOGIN MODAL -->
+    <div id="adminModal" class="fixed inset-0 z-50 hidden bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-md rounded-2xl shadow-2xl p-6 border border-slate-200 dark:border-slate-800">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="font-bold text-lg text-slate-900 dark:text-white flex items-center gap-2">
+                    <i class="fa-solid fa-user-shield text-amber-500"></i> Admin Passcode Authentication
+                </h3>
+                <button onclick="closeAdminModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">
+                Enter your admin passcode to access settings command modal, expulsion controls, live attendance logs, uploads, and question answers.
+            </p>
+            <form onsubmit="handleAdminLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Passcode</label>
+                    <input type="password" id="adminPasscode" required placeholder="Enter passcode..." class="w-full text-xs px-3 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500">
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeAdminModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">Cancel</button>
+                    <button type="submit" class="px-4 py-2 text-xs font-bold bg-amber-500 hover:bg-amber-600 text-slate-950 rounded-lg shadow transition">Authenticate</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- SUBMIT QUESTION MODAL (STUDENTS) -->
+    <div id="questionModal" class="fixed inset-0 z-50 hidden bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-lg rounded-2xl shadow-2xl p-6 border border-slate-200 dark:border-slate-800">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="font-bold text-lg text-slate-900 dark:text-white flex items-center gap-2">
+                    <i class="fa-solid fa-circle-question text-amber-500"></i> Post a Challenging Question
+                </h3>
+                <button onclick="closeQuestionModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <form onsubmit="handleQuestionSubmit(event)" class="space-y-3">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Author / Student Name</label>
+                    <input type="text" id="qAuthor" required placeholder="Your name or registration number..." class="w-full text-xs px-3 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Category / Domain</label>
+                        <select id="qCategory" class="w-full text-xs px-3 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:outline-none">
+                            <option value="S105 - Security Science">S105 - Security Science</option>
+                            <option value="S106 - International Relations">S106 - International Relations</option>
+                            <option value="General Academic Support">General Academic Support</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Topic / Subject Title</label>
+                        <input type="text" id="qTitle" required placeholder="e.g., Strategic Defense Models" class="w-full text-xs px-3 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:outline-none">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Detailed Question Description</label>
+                    <textarea id="qBody" rows="4" required placeholder="Type your question or difficulty here..." class="w-full text-xs px-3 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:outline-none"></textarea>
+                </div>
+                <div class="pt-4 flex justify-end gap-2">
+                    <button type="button" onclick="closeQuestionModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">Cancel</button>
+                    <button type="submit" class="px-5 py-2 text-xs font-bold bg-amber-500 hover:bg-amber-600 text-slate-950 rounded-lg shadow transition">Post Question</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- UPLOAD DOCUMENT MODAL (ADMIN ONLY) -->
+    <div id="uploadModal" class="fixed inset-0 z-50 hidden bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-lg rounded-2xl shadow-2xl p-6 border border-slate-200 dark:border-slate-800">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="font-bold text-lg text-slate-900 dark:text-white flex items-center gap-2">
+                    <i class="fa-solid fa-cloud-arrow-up text-emerald-500"></i> Upload Course Reading Document
+                </h3>
+                <button onclick="closeUploadModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <form onsubmit="handleDocumentUpload(event)" class="space-y-3">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Document Title</label>
+                    <input type="text" id="docTitle" required placeholder="e.g. S105 Module 1: Strategic Defense Notes" class="w-full text-xs px-3 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Domain Category</label>
+                        <select id="docCategory" class="w-full text-xs px-3 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:outline-none">
+                            <option value="S105 Security Science">S105 Security Science</option>
+                            <option value="S106 International Relations">S106 International Relations</option>
+                            <option value="General Module">General Module</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Select File (PDF / DOCX)</label>
+                        <input type="file" id="docFile" required accept=".pdf, .doc, .docx" class="w-full text-xs text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded-lg file:border-0 file:text-xs file:bg-brand-50 file:text-brand-700 hover:file:bg-brand-100">
+                    </div>
+                </div>
+                <div class="pt-4 flex justify-end gap-2">
+                    <button type="button" onclick="closeUploadModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">Cancel</button>
+                    <button type="submit" class="px-5 py-2 text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg shadow transition">Save & Backup Document</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- SCHEDULE GOOGLE MEET MODAL (ADMIN ONLY) -->
+    <div id="meetModal" class="fixed inset-0 z-50 hidden bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-lg rounded-2xl shadow-2xl p-6 border border-slate-200 dark:border-slate-800">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="font-bold text-lg text-slate-900 dark:text-white flex items-center gap-2">
+                    <i class="fa-solid fa-video text-brand-500"></i> Schedule Google Meet Lecture
+                </h3>
+                <button onclick="closeMeetModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <form onsubmit="handleMeetSchedule(event)" class="space-y-3">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Session Title</label>
+                    <input type="text" id="meetTitle" required placeholder="e.g. S106 Geopolitics & Foreign Policy Virtual Seminar" class="w-full text-xs px-3 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Google Meet Room URL</label>
+                    <input type="url" id="meetUrl" required placeholder="https://meet.google.com/abc-defg-hij" class="w-full text-xs px-3 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:outline-none">
+                </div>
+                <div class="pt-4 flex justify-end gap-2">
+                    <button type="button" onclick="closeMeetModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">Cancel</button>
+                    <button type="submit" class="px-5 py-2 text-xs font-bold bg-brand-600 hover:bg-brand-700 text-white rounded-lg shadow transition">Schedule Meet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-brand-900 text-slate-300 py-8 border-t border-slate-800 mt-auto text-center text-xs">
+        <p>&copy; 2026 ODOK / SECURITY SCIENCE & MANAGEMENT (S105), INTERNATIONAL RELATIONS & PEACE STUDIES (S106).</p>
+    </footer>
+
+    <!-- JAVASCRIPT APPLICATION LOGIC -->
+    <script>
+        // ADMIN DEFAULT PASSCODE WITH DYNAMIC BACKUP OVERRIDE
+        const DEFAULT_PASSCODE = "YonaOdok@001";
+        let isAdminMode = false;
+
+        // Persistent Data Collections (Auto-Backup Stores)
+        let currentStudent = JSON.parse(localStorage.getItem('odok_student_profile')) || null;
+        let registeredRoster = JSON.parse(localStorage.getItem('odok_students_roster')) || [];
+        let heartbeatStore = JSON.parse(localStorage.getItem('odok_student_heartbeats')) || {};
+        let uploadedDocs = JSON.parse(localStorage.getItem('odok_docs_backup')) || [];
+        let scheduledMeets = JSON.parse(localStorage.getItem('odok_meets_backup')) || [];
+        let studentQuestions = JSON.parse(localStorage.getItem('odok_qa_backup')) || [];
+        let attendanceLogs = JSON.parse(localStorage.getItem('odok_attendance_backup')) || [];
+
+        window.onload = function() {
+            // Apply saved portal background theme
+            const savedTheme = localStorage.getItem('odok_portal_theme') || 'theme-slate';
+            setPortalTheme(savedTheme, false);
+
+            // Apply saved announcement text
+            const savedAnnouncement = localStorage.getItem('odok_announcement_text');
+            if(savedAnnouncement) {
+                document.getElementById('announcementText').innerText = savedAnnouncement;
+            }
+
+            renderStudentRegistrationBanner();
+            renderDocuments();
+            renderMeets();
+            renderQuestions();
+            
+            // Start heartbeat tracking
+            startHeartbeat();
+            
+            // Periodically refresh presence roster & heartbeats
+            setInterval(checkHeartbeats, 5000);
+        };
+
+        function getActiveAdminPasscode() {
+            return localStorage.getItem('odok_admin_passcode') || DEFAULT_PASSCODE;
+        }
+
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+        }
+
+        // ==========================================
+        // FEATURE 1: STUDENT REGISTRATION & PERSISTENT AUTO-BACKUP
+        // ==========================================
+        function openStudentRegisterModal() {
+            if(currentStudent) {
+                document.getElementById('regFullName').value = currentStudent.fullName;
+                document.getElementById('regStudentId').value = currentStudent.regId;
+                document.getElementById('regProgram').value = currentStudent.program;
+            }
+            document.getElementById('studentRegisterModal').classList.remove('hidden');
+        }
+        function closeStudentRegisterModal() {
+            document.getElementById('studentRegisterModal').classList.add('hidden');
+        }
+
+        function handleStudentRegister(e) {
+            e.preventDefault();
+            const fullName = document.getElementById('regFullName').value.trim();
+            const regId = document.getElementById('regStudentId').value.trim();
+            const program = document.getElementById('regProgram').value;
+
+            // Auto-Format Check for S105/S106 prefix
+            if(!regId.toUpperCase().includes('S105') && !regId.toUpperCase().includes('S106')) {
+                if(!confirm("Warning: Registration number does not contain standard S105 or S106 prefix. Save anyway?")) {
+                    return;
+                }
+            }
+
+            currentStudent = {
+                regId: regId,
+                fullName: fullName,
+                program: program,
+                registeredAt: new Date().toLocaleDateString()
+            };
+
+            // Save active profile locally
+            localStorage.setItem('odok_student_profile', JSON.stringify(currentStudent));
+
+            // AUTO-BACKUP: Sync to persistent global registered roster storage ('odok_students_roster')
+            registeredRoster = JSON.parse(localStorage.getItem('odok_students_roster')) || [];
+            const existingIdx = registeredRoster.findIndex(s => s.regId.toLowerCase() === regId.toLowerCase());
+            
+            if(existingIdx >= 0) {
+                registeredRoster[existingIdx] = currentStudent;
+            } else {
+                registeredRoster.push(currentStudent);
+            }
+
+            // Write back to persistent auto-backup storage
+            localStorage.setItem('odok_students_roster', JSON.stringify(registeredRoster));
+
+            closeStudentRegisterModal();
+            renderStudentRegistrationBanner();
+            startHeartbeat();
+            renderAdminRoster();
+            
+            alert(`Registration Saved & Auto-Backed Up!\nStudent: ${fullName}\nReg ID: ${regId}\nAuto-backup synced in odok_students_roster.`);
+        }
+
+        function renderStudentRegistrationBanner() {
+            const banner = document.getElementById('studentRegistrationBanner');
+            if(!currentStudent) {
+                banner.innerHTML = `
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-2xl bg-amber-100 dark:bg-amber-950/80 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xl font-bold flex-shrink-0">
+                            <i class="fa-solid fa-user-plus"></i>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">One-Time Student Registration</span>
+                            <h3 class="font-serif-title font-bold text-base text-slate-900 dark:text-white">Register Student ID (S105 / S106)</h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Your record auto-backups into persistent portal database and logs live presence & class attendance.</p>
+                        </div>
+                    </div>
+                    <button onclick="openStudentRegisterModal()" class="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs shadow-md transition flex items-center gap-2 self-start md:self-center">
+                        <i class="fa-solid fa-address-card"></i> Register Profile
+                    </button>
+                `;
+            } else {
+                banner.innerHTML = `
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-100 dark:bg-emerald-950/80 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl font-bold flex-shrink-0">
+                            <i class="fa-solid fa-id-badge"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-[10px] font-extrabold uppercase tracking-widest bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 px-2 py-0.5 rounded">Auto-Backed Up Student Record</span>
+                                <span class="text-[10px] text-slate-400">Registered on ${currentStudent.registeredAt}</span>
+                            </div>
+                            <h3 class="font-serif-title font-bold text-base text-slate-900 dark:text-white mt-0.5">${currentStudent.fullName} <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">(${currentStudent.regId})</span></h3>
+                            <p class="text-xs text-brand-600 dark:text-amber-400 font-medium">${currentStudent.program}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="openStudentRegisterModal()" class="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-semibold text-xs transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-pen"></i> Edit Profile
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        // ==========================================
+        // FEATURE 2: REAL-TIME HEARTBEAT & PRESENCE
+        // ==========================================
+        function startHeartbeat() {
+            sendHeartbeat();
+            setInterval(sendHeartbeat, 5000);
+        }
+
+        function sendHeartbeat() {
+            if(!currentStudent) return;
+
+            heartbeatStore = JSON.parse(localStorage.getItem('odok_student_heartbeats')) || {};
+            heartbeatStore[currentStudent.regId] = {
+                fullName: currentStudent.fullName,
+                program: currentStudent.program,
+                lastSeen: Date.now()
+            };
+
+            localStorage.setItem('odok_student_heartbeats', JSON.stringify(heartbeatStore));
+            checkHeartbeats();
+        }
+
+        function checkHeartbeats() {
+            heartbeatStore = JSON.parse(localStorage.getItem('odok_student_heartbeats')) || {};
+            registeredRoster = JSON.parse(localStorage.getItem('odok_students_roster')) || [];
+            
+            const now = Date.now();
+            let onlineCount = 0;
+
+            Object.keys(heartbeatStore).forEach(regId => {
+                if (now - heartbeatStore[regId].lastSeen < 15000) {
+                    onlineCount++;
+                }
+            });
+
+            const activeEl = document.getElementById('activeCountText');
+            if(activeEl) activeEl.innerText = `${onlineCount} Active Online`;
+
+            if(isAdminMode) {
+                renderAdminRoster();
+            }
+        }
+
+        // ==========================================
+        // FEATURE 3: ADMIN AUTHENTICATION & SETTINGS COMMAND MODAL
+        // ==========================================
+        function openAdminModal() {
+            if(isAdminMode) {
+                logoutAdmin();
+            } else {
+                document.getElementById('adminModal').classList.remove('hidden');
+            }
+        }
+        function closeAdminModal() { document.getElementById('adminModal').classList.add('hidden'); }
+
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            const entered = document.getElementById('adminPasscode').value;
+            const requiredPasscode = getActiveAdminPasscode();
+
+            if(entered === requiredPasscode) {
+                isAdminMode = true;
+                document.getElementById('roleLabel').innerText = "Admin Mode";
+                document.getElementById('roleLabel').className = "text-[11px] font-bold bg-amber-500 text-slate-950 px-2.5 py-1 rounded-full shadow-sm";
+                document.getElementById('roleActionBtn').innerHTML = '<i class="fa-solid fa-right-from-bracket me-1"></i> Logout';
+                
+                document.getElementById('adminUploadBtn').classList.remove('hidden');
+                document.getElementById('adminAddMeetBtn').classList.remove('hidden');
+                document.getElementById('adminSettingsBtn').classList.remove('hidden');
+                document.getElementById('adminRosterSection').classList.remove('hidden');
+
+                closeAdminModal();
+                renderDocuments();
+                renderMeets();
+                renderQuestions();
+                renderAdminRoster();
+            } else {
+                alert("Incorrect admin passcode!");
+            }
+        }
+
+        function logoutAdmin() {
+            isAdminMode = false;
+            document.getElementById('roleLabel').innerText = "Student Mode";
+            document.getElementById('roleLabel').className = "text-[11px] font-semibold bg-slate-800 text-slate-300 px-2.5 py-1 rounded-full border border-slate-700";
+            document.getElementById('roleActionBtn').innerHTML = '<i class="fa-solid fa-lock me-1"></i> Admin Login';
+            
+            document.getElementById('adminUploadBtn').classList.add('hidden');
+            document.getElementById('adminAddMeetBtn').classList.add('hidden');
+            document.getElementById('adminSettingsBtn').classList.add('hidden');
+            document.getElementById('adminRosterSection').classList.add('hidden');
+
+            renderDocuments();
+            renderMeets();
+            renderQuestions();
+        }
+
+        // SETTINGS COMMAND MODAL CONTROLLERS
+        function openSettingsModal() {
+            if(!isAdminMode) {
+                alert("Please authenticate as Admin first.");
+                openAdminModal();
+                return;
+            }
+            const currentAnn = document.getElementById('announcementText').innerText;
+            document.getElementById('settingAnnouncementInput').value = currentAnn;
+            document.getElementById('settingsModal').classList.remove('hidden');
+        }
+
+        function closeSettingsModal() {
+            document.getElementById('settingsModal').classList.add('hidden');
+        }
+
+        // SETTINGS COMMAND 1: CHANGE PASSCODE
+        function handleChangePasscode(e) {
+            e.preventDefault();
+            const oldP = document.getElementById('passOld').value;
+            const newP = document.getElementById('passNew').value;
+            const confP = document.getElementById('passConfirm').value;
+
+            const currentActive = getActiveAdminPasscode();
+
+            if(oldP !== currentActive) {
+                alert("Verification Failed: Current passcode is incorrect.");
+                return;
+            }
+
+            if(newP !== confP) {
+                alert("New passcode and confirmation do not match!");
+                return;
+            }
+
+            if(newP.length < 5) {
+                alert("Passcode must be at least 5 characters long.");
+                return;
+            }
+
+            localStorage.setItem('odok_admin_passcode', newP);
+            alert("Success! Admin Passcode updated. Use your new passcode for future logins.");
+            document.getElementById('passOld').value = '';
+            document.getElementById('passNew').value = '';
+            document.getElementById('passConfirm').value = '';
+        }
+
+        // SETTINGS COMMAND 2: THEME & BACKGROUND CUSTOMIZER
+        function setPortalTheme(themeClass, showNotice = true) {
+            const body = document.getElementById('portalBody');
+            body.className = `min-h-screen flex flex-col transition-colors duration-300 ${themeClass}`;
+            localStorage.setItem('odok_portal_theme', themeClass);
+            if(showNotice) alert(`Portal theme updated to: ${themeClass.replace('theme-', '').toUpperCase()}`);
+        }
+
+        // SETTINGS COMMAND 3: SAVE ANNOUNCEMENT
+        function handleSaveAnnouncement(e) {
+            e.preventDefault();
+            const msg = document.getElementById('settingAnnouncementInput').value.trim();
+            if(!msg) return;
+
+            document.getElementById('announcementText').innerText = msg;
+            localStorage.setItem('odok_announcement_text', msg);
+            alert("Top Announcement Banner updated successfully!");
+        }
+
+        // SETTINGS COMMAND 4: FULL DATABASE JSON AUTO-BACKUP EXPORT & IMPORT
+        function exportFullDatabaseJSON() {
+            const fullData = {
+                studentsRoster: JSON.parse(localStorage.getItem('odok_students_roster')) || [],
+                documents: JSON.parse(localStorage.getItem('odok_docs_backup')) || [],
+                meets: JSON.parse(localStorage.getItem('odok_meets_backup')) || [],
+                qa: JSON.parse(localStorage.getItem('odok_qa_backup')) || [],
+                attendance: JSON.parse(localStorage.getItem('odok_attendance_backup')) || [],
+                theme: localStorage.getItem('odok_portal_theme') || 'theme-slate',
+                announcement: localStorage.getItem('odok_announcement_text') || '',
+                exportDate: new Date().toISOString()
+            };
+
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(fullData, null, 2));
+            const dlAnchor = document.createElement('a');
+            dlAnchor.setAttribute("href", dataStr);
+            dlAnchor.setAttribute("download", `ODOK_Database_AutoBackup_${new Date().toISOString().slice(0,10)}.json`);
+            document.body.appendChild(dlAnchor);
+            dlAnchor.click();
+            dlAnchor.remove();
+        }
+
+        function importFullDatabaseJSON(e) {
+            const file = e.target.files[0];
+            if(!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                try {
+                    const imported = JSON.parse(evt.target.result);
+                    if(imported.studentsRoster) localStorage.setItem('odok_students_roster', JSON.stringify(imported.studentsRoster));
+                    if(imported.documents) localStorage.setItem('odok_docs_backup', JSON.stringify(imported.documents));
+                    if(imported.meets) localStorage.setItem('odok_meets_backup', JSON.stringify(imported.meets));
+                    if(imported.qa) localStorage.setItem('odok_qa_backup', JSON.stringify(imported.qa));
+                    if(imported.attendance) localStorage.setItem('odok_attendance_backup', JSON.stringify(imported.attendance));
+
+                    registeredRoster = imported.studentsRoster || [];
+                    uploadedDocs = imported.documents || [];
+                    scheduledMeets = imported.meets || [];
+                    studentQuestions = imported.qa || [];
+                    attendanceLogs = imported.attendance || [];
+
+                    renderDocuments();
+                    renderMeets();
+                    renderQuestions();
+                    renderAdminRoster();
+
+                    alert("Database JSON restored successfully!");
+                } catch(err) {
+                    alert("Error parsing JSON backup file: " + err.message);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // SETTINGS COMMAND 5: CLEAR COLLECTIONS & FACTORY RESET
+        function clearCollection(type) {
+            if(!confirm(`Are you sure you want to clear ${type} data?`)) return;
+
+            if(type === 'docs') { localStorage.removeItem('odok_docs_backup'); uploadedDocs = []; renderDocuments(); }
+            if(type === 'meets') { localStorage.removeItem('odok_meets_backup'); scheduledMeets = []; renderMeets(); }
+            if(type === 'qa') { localStorage.removeItem('odok_qa_backup'); studentQuestions = []; renderQuestions(); }
+            if(type === 'attendance') { localStorage.removeItem('odok_attendance_backup'); attendanceLogs = []; renderAdminRoster(); }
+
+            alert(`${type.toUpperCase()} data cleared.`);
+        }
+
+        function hardFactoryReset() {
+            if(confirm("DANGER: Perform hard factory reset? All student records, uploaded documents, lectures, and Q&As will be wiped.")) {
+                localStorage.clear();
+                alert("Portal reset to initial factory state.");
+                location.reload();
+            }
+        }
+
+        // ==========================================
+        // FEATURE 4: ADMIN ROSTER & STUDENT REMOVAL COMMAND
+        // ==========================================
+        function renderAdminRoster() {
+            if(!isAdminMode) return;
+
+            registeredRoster = JSON.parse(localStorage.getItem('odok_students_roster')) || [];
+            heartbeatStore = JSON.parse(localStorage.getItem('odok_student_heartbeats')) || {};
+            attendanceLogs = JSON.parse(localStorage.getItem('odok_attendance_backup')) || [];
+
+            const searchVal = (document.getElementById('rosterSearch')?.value || '').toLowerCase();
+            const filterVal = document.getElementById('rosterFilter')?.value || 'ALL';
+
+            const tbody = document.getElementById('rosterTableBody');
+            const now = Date.now();
+
+            let onlineCounter = 0;
+            let offlineCounter = 0;
+
+            let rowsHTML = '';
+
+            if(registeredRoster.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-slate-400 italic">No registered students found in auto-backup database. Students register via the top portal banner.</td></tr>`;
+                document.getElementById('statTotalStudents').innerText = '0';
+                document.getElementById('statOnlineStudents').innerText = '0';
+                document.getElementById('statOfflineStudents').innerText = '0';
+                document.getElementById('statAttendanceCount').innerText = attendanceLogs.length.toString();
+                return;
+            }
+
+            registeredRoster.forEach(student => {
+                const hb = heartbeatStore[student.regId];
+                const isOnline = hb && (now - hb.lastSeen < 15000);
+
+                if(isOnline) onlineCounter++; else offlineCounter++;
+
+                // Search Filter
+                const matchesSearch = student.fullName.toLowerCase().includes(searchVal) || student.regId.toLowerCase().includes(searchVal);
+                
+                // Status / Category Filter
+                let matchesFilter = true;
+                if(filterVal === 'ONLINE') matchesFilter = isOnline;
+                if(filterVal === 'OFFLINE') matchesFilter = !isOnline;
+                if(filterVal === 'S105') matchesFilter = student.regId.toUpperCase().includes('S105');
+                if(filterVal === 'S106') matchesFilter = student.regId.toUpperCase().includes('S106');
+
+                if(matchesSearch && matchesFilter) {
+                    const studentMeets = attendanceLogs.filter(a => a.regId && a.regId.toLowerCase() === student.regId.toLowerCase());
+                    const lastSeenText = hb ? new Date(hb.lastSeen).toLocaleTimeString() : 'Never';
+
+                    rowsHTML += `
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                            <td class="p-3">
+                                ${isOnline ? `
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300">
+                                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span> Online
+                                    </span>
+                                ` : `
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-red-100 text-red-700 dark:bg-red-950/60 dark:text-red-300">
+                                        <span class="w-2 h-2 rounded-full bg-red-500"></span> Offline
+                                    </span>
+                                `}
+                            </td>
+                            <td class="p-3 font-semibold text-slate-900 dark:text-white">${student.fullName}</td>
+                            <td class="p-3 font-mono text-slate-600 dark:text-slate-300">${student.regId}</td>
+                            <td class="p-3 text-slate-500 dark:text-slate-400">${student.program}</td>
+                            <td class="p-3 text-slate-500 text-[11px]">${lastSeenText}</td>
+                            <td class="p-3">
+                                <span class="px-2 py-0.5 rounded bg-brand-50 dark:bg-slate-900 text-brand-600 dark:text-amber-400 font-bold">${studentMeets.length} Sessions</span>
+                            </td>
+                            <td class="p-3 text-right">
+                                <!-- ADMIN EXPEL / REMOVE STUDENT COMMAND -->
+                                <button onclick="removeStudentFromPortal('${student.regId}', '${student.fullName}')" class="px-2.5 py-1 rounded-md bg-red-100 dark:bg-red-950/80 text-red-600 hover:bg-red-600 hover:text-white text-xs font-bold transition flex items-center gap-1 ms-auto" title="Remove student from portal">
+                                    <i class="fa-solid fa-user-xmark"></i> Remove Student
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                }
+            });
+
+            tbody.innerHTML = rowsHTML || `<tr><td colspan="7" class="p-4 text-center text-slate-400 italic">No matching student records found.</td></tr>`;
+
+            document.getElementById('statTotalStudents').innerText = registeredRoster.length.toString();
+            document.getElementById('statOnlineStudents').innerText = onlineCounter.toString();
+            document.getElementById('statOfflineStudents').innerText = offlineCounter.toString();
+            document.getElementById('statAttendanceCount').innerText = attendanceLogs.length.toString();
+        }
+
+        // ADMIN REMOVE STUDENT COMMAND
+        function removeStudentFromPortal(regId, fullName) {
+            if(confirm(`ADMIN COMMAND: Expel and remove ${fullName} (${regId}) from portal auto-backup database?`)) {
+                registeredRoster = registeredRoster.filter(s => s.regId.toLowerCase() !== regId.toLowerCase());
+                localStorage.setItem('odok_students_roster', JSON.stringify(registeredRoster));
+
+                // Also remove active student session if self
+                if(currentStudent && currentStudent.regId.toLowerCase() === regId.toLowerCase()) {
+                    localStorage.removeItem('odok_student_profile');
+                    currentStudent = null;
+                    renderStudentRegistrationBanner();
+                }
+
+                renderAdminRoster();
+                alert(`Student ${fullName} (${regId}) removed successfully.`);
+            }
+        }
+
+        function exportRosterCSV() {
+            registeredRoster = JSON.parse(localStorage.getItem('odok_students_roster')) || [];
+            heartbeatStore = JSON.parse(localStorage.getItem('odok_student_heartbeats')) || {};
+            attendanceLogs = JSON.parse(localStorage.getItem('odok_attendance_backup')) || [];
+
+            if(registeredRoster.length === 0) {
+                alert("Roster database is currently empty.");
+                return;
+            }
+
+            let csvContent = "data:text/csv;charset=utf-8,Full Name,Registration ID,Program,Status,Classes Attended\n";
+            const now = Date.now();
+
+            registeredRoster.forEach(s => {
+                const hb = heartbeatStore[s.regId];
+                const isOnline = hb && (now - hb.lastSeen < 15000);
+                const count = attendanceLogs.filter(a => a.regId && a.regId.toLowerCase() === s.regId.toLowerCase()).length;
+                
+                csvContent += `"${s.fullName}","${s.regId}","${s.program}","${isOnline ? 'Online' : 'Offline'}",${count}\n`;
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `ODOK_Student_Roster_${new Date().toISOString().slice(0,10)}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // ==========================================
+        // FEATURE 5: DOCUMENT UPLOADS
+        // ==========================================
+        function openUploadModal() { document.getElementById('uploadModal').classList.remove('hidden'); }
+        function closeUploadModal() { document.getElementById('uploadModal').classList.add('hidden'); }
+
+        function handleDocumentUpload(e) {
+            e.preventDefault();
+            const title = document.getElementById('docTitle').value;
+            const category = document.getElementById('docCategory').value;
+            const fileInput = document.getElementById('docFile');
+            const file = fileInput.files[0];
+
+            if(!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const docObj = {
+                    id: 'doc_' + Date.now(),
+                    title: title,
+                    category: category,
+                    fileName: file.name,
+                    fileSize: (file.size / (1024 * 1024)).toFixed(2) + ' MB',
+                    fileData: evt.target.result,
+                    uploadDate: new Date().toLocaleDateString()
+                };
+
+                uploadedDocs.unshift(docObj);
+                localStorage.setItem('odok_docs_backup', JSON.stringify(uploadedDocs));
+                
+                renderDocuments();
+                closeUploadModal();
+                alert("Document uploaded and auto-backed up successfully!");
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function renderDocuments() {
+            const container = document.getElementById('notesContainer');
+            if(uploadedDocs.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-12 bg-white dark:bg-slate-800/40 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700">
+                        <i class="fa-solid fa-folder-open text-4xl text-slate-400 mb-3 block"></i>
+                        <h3 class="font-bold text-sm text-slate-700 dark:text-slate-200">No Course Reading Documents Uploaded Yet</h3>
+                        <p class="text-xs text-slate-500 mt-1">${isAdminMode ? 'Click "Upload Doc" above to post course readings.' : 'Please check back later once the Admin publishes study notes.'}</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = uploadedDocs.map(doc => `
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-brand-50 dark:bg-slate-900 text-brand-600 dark:text-amber-400">${doc.category}</span>
+                            <span class="text-[10px] text-slate-400"><i class="fa-regular fa-calendar me-1"></i>${doc.uploadDate}</span>
+                        </div>
+                        <h3 class="font-serif-title font-bold text-sm text-slate-900 dark:text-white leading-snug">${doc.title}</h3>
+                        <p class="text-[11px] text-slate-400 mt-2 truncate"><i class="fa-solid fa-file-pdf me-1 text-red-500"></i> ${doc.fileName} (${doc.fileSize})</p>
+                    </div>
+                    <div class="mt-5 pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between">
+                        <a href="${doc.fileData}" download="${doc.fileName}" class="px-3 py-1.5 rounded-lg bg-brand-600 hover:bg-brand-700 text-white font-semibold text-xs transition flex items-center gap-1">
+                            <i class="fa-solid fa-download text-[10px]"></i> Download
+                        </a>
+                        ${isAdminMode ? `<button onclick="deleteDocument('${doc.id}')" class="text-slate-400 hover:text-red-500 text-xs transition"><i class="fa-solid fa-trash-can"></i> Delete</button>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function deleteDocument(id) {
+            if(confirm("Delete this document from storage?")) {
+                uploadedDocs = uploadedDocs.filter(d => d.id !== id);
+                localStorage.setItem('odok_docs_backup', JSON.stringify(uploadedDocs));
+                renderDocuments();
+            }
+        }
+
+        // ==========================================
+        // FEATURE 6: GOOGLE MEET SEMINARS & ATTENDANCE
+        // ==========================================
+        function openMeetModal() { document.getElementById('meetModal').classList.remove('hidden'); }
+        function closeMeetModal() { document.getElementById('meetModal').classList.add('hidden'); }
+
+        function handleMeetSchedule(e) {
+            e.preventDefault();
+            const title = document.getElementById('meetTitle').value;
+            const url = document.getElementById('meetUrl').value;
+
+            const meetObj = {
+                id: 'meet_' + Date.now(),
+                title: title,
+                url: url,
+                date: new Date().toLocaleDateString()
+            };
+
+            scheduledMeets.unshift(meetObj);
+            localStorage.setItem('odok_meets_backup', JSON.stringify(scheduledMeets));
+            
+            renderMeets();
+            closeMeetModal();
+            alert("Google Meet lecture session scheduled!");
+        }
+
+        function renderMeets() {
+            const container = document.getElementById('meetsContainer');
+            if(scheduledMeets.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-8 bg-white dark:bg-slate-800/40 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700">
+                        <i class="fa-solid fa-video text-3xl text-slate-400 mb-2 block"></i>
+                        <h3 class="font-bold text-xs text-slate-700 dark:text-slate-200">No Google Meet Seminars Scheduled</h3>
+                        <p class="text-[11px] text-slate-500 mt-0.5">${isAdminMode ? 'Click "Schedule Meet" to create a live class session.' : 'Check back later for scheduled live lectures.'}</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = scheduledMeets.map(m => `
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="px-2 py-0.5 rounded text-[10px] font-extrabold uppercase bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 flex items-center gap-1">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span> Google Meet
+                            </span>
+                            ${isAdminMode ? `<button onclick="deleteMeet('${m.id}')" class="text-slate-400 hover:text-red-500 text-xs transition"><i class="fa-solid fa-trash-can"></i></button>` : ''}
+                        </div>
+                        <h3 class="font-serif-title font-bold text-sm text-slate-900 dark:text-white">${m.title}</h3>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-700">
+                        <button onclick="joinLectureSession('${m.id}', '${m.url}')" class="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow transition flex items-center justify-center gap-2 block text-center">
+                            <i class="fa-solid fa-video"></i> Join Live Lecture
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function deleteMeet(id) {
+            if(confirm("Cancel this scheduled meeting?")) {
+                scheduledMeets = scheduledMeets.filter(m => m.id !== id);
+                localStorage.setItem('odok_meets_backup', JSON.stringify(scheduledMeets));
+                renderMeets();
+            }
+        }
+
+        function joinLectureSession(meetId, meetUrl) {
+            if(!currentStudent) {
+                alert("Please register your student ID banner at the top of the portal first!");
+                openStudentRegisterModal();
+                return;
+            }
+
+            const meet = scheduledMeets.find(m => m.id === meetId);
+            const meetTitle = meet ? meet.title : "Live Virtual Seminar";
+
+            const attObj = {
+                id: 'att_' + Date.now(),
+                regId: currentStudent.regId,
+                studentName: currentStudent.fullName,
+                program: currentStudent.program,
+                meetTitle: meetTitle,
+                timestamp: new Date().toLocaleString()
+            };
+
+            attendanceLogs.unshift(attObj);
+            localStorage.setItem('odok_attendance_backup', JSON.stringify(attendanceLogs));
+
+            renderAdminRoster();
+            window.open(meetUrl, '_blank');
+        }
+
+        // ==========================================
+        // FEATURE 7: Q&A HELPFUL FORUM LOGIC
+        // ==========================================
+        function openQuestionModal() {
+            if(currentStudent) {
+                document.getElementById('qAuthor').value = `${currentStudent.fullName} (${currentStudent.regId})`;
+            }
+            document.getElementById('questionModal').classList.remove('hidden');
+        }
+        function closeQuestionModal() { document.getElementById('questionModal').classList.add('hidden'); }
+
+        function handleQuestionSubmit(e) {
+            e.preventDefault();
+            const author = document.getElementById('qAuthor').value;
+            const category = document.getElementById('qCategory').value;
+            const title = document.getElementById('qTitle').value;
+            const body = document.getElementById('qBody').value;
+
+            const questionObj = {
+                id: 'q_' + Date.now(),
+                author: author,
+                category: category,
+                title: title,
+                body: body,
+                answer: null,
+                date: new Date().toLocaleDateString()
+            };
+
+            studentQuestions.unshift(questionObj);
+            localStorage.setItem('odok_qa_backup', JSON.stringify(studentQuestions));
+
+            renderQuestions();
+            closeQuestionModal();
+            alert("Your question has been posted! The admin will review and answer it.");
+        }
+
+        function renderQuestions() {
+            const container = document.getElementById('questionsContainer');
+            if(studentQuestions.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-12 bg-white dark:bg-slate-800/40 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700">
+                        <i class="fa-solid fa-comments text-4xl text-slate-400 mb-3 block"></i>
+                        <h3 class="font-bold text-sm text-slate-700 dark:text-slate-200">No Questions Posted Yet</h3>
+                        <p class="text-xs text-slate-500 mt-1">Students can click "Submit Question" above to ask about course difficulties.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = studentQuestions.map(q => `
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded bg-amber-100 text-amber-900 dark:bg-amber-950/60 dark:text-amber-300">${q.category}</span>
+                            <span class="text-[10px] text-slate-400"><i class="fa-regular fa-clock me-1"></i>${q.date}</span>
+                        </div>
+                        <h3 class="font-serif-title font-bold text-sm text-slate-900 dark:text-white">${q.title}</h3>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 mt-2 bg-slate-50 dark:bg-slate-900/60 p-3 rounded-xl border border-slate-100 dark:border-slate-800 leading-relaxed">${q.body}</p>
+                        <p class="text-[10px] text-slate-400 mt-2"><i class="fa-solid fa-user-graduate me-1"></i>Asked by: <span class="font-semibold text-slate-600 dark:text-slate-300">${q.author}</span></p>
+
+                        <!-- Admin Answer Block -->
+                        <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-700">
+                            ${q.answer ? `
+                                <div class="bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 rounded-xl p-3 text-xs">
+                                    <div class="flex items-center gap-1.5 text-emerald-700 dark:text-emerald-400 font-bold mb-1">
+                                        <i class="fa-solid fa-user-shield text-xs"></i> Official Admin Answer:
+                                    </div>
+                                    <p class="text-slate-800 dark:text-slate-200 leading-relaxed">${q.answer}</p>
+                                </div>
+                            ` : `
+                                <div class="flex items-center justify-between text-xs text-amber-600 dark:text-amber-400 font-semibold bg-amber-50 dark:bg-amber-950/30 p-2.5 rounded-xl border border-amber-200 dark:border-amber-900/40">
+                                    <span><i class="fa-solid fa-hourglass-half me-1"></i> Pending Admin Response</span>
+                                    ${isAdminMode ? `<button onclick="answerQuestion('${q.id}')" class="px-2.5 py-1 bg-amber-500 text-slate-950 font-bold rounded-lg shadow text-[10px]"><i class="fa-solid fa-reply me-1"></i> Answer</button>` : ''}
+                                </div>
+                            `}
+                        </div>
+                    </div>
+
+                    ${isAdminMode ? `
+                        <div class="mt-4 pt-2 flex justify-end gap-3 border-t border-slate-100 dark:border-slate-700 text-xs">
+                            ${q.answer ? `<button onclick="answerQuestion('${q.id}')" class="text-brand-600 dark:text-amber-400 font-semibold hover:underline"><i class="fa-solid fa-pen-to-square me-1"></i> Edit Answer</button>` : ''}
+                            <button onclick="deleteQuestion('${q.id}')" class="text-red-500 font-semibold hover:underline"><i class="fa-solid fa-trash-can me-1"></i> Delete</button>
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+
+        function answerQuestion(id) {
+            const reply = prompt("Enter official Admin answer for this student question:");
+            if(reply && reply.trim() !== "") {
+                studentQuestions = studentQuestions.map(q => {
+                    if(q.id === id) q.answer = reply.trim();
+                    return q;
+                });
+                localStorage.setItem('odok_qa_backup', JSON.stringify(studentQuestions));
+                renderQuestions();
+                alert("Answer published successfully!");
+            }
+        }
+
+        function deleteQuestion(id) {
+            if(confirm("Delete this question from forum?")) {
+                studentQuestions = studentQuestions.filter(q => q.id !== id);
+                localStorage.setItem('odok_qa_backup', JSON.stringify(studentQuestions));
+                renderQuestions();
+            }
+        }
+    </script>
+</body>
+</html>
